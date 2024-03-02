@@ -48,12 +48,6 @@ function FullCalendarReducer(state = initialState, action) {
       }
     }
 
-    case 'CHANGE_SHOW_DATE':
-      return {
-        ...state,
-        showDate: action.showDate,
-      }
-
     case 'CHANGE_SELECT_DATE': {
       const temp = {
         selectStart: action.selectInfo.start,

@@ -35,6 +35,7 @@ export function InnerCalendar({
 }) {
   const [value, setValue] = useState(new Date())
   const onChange = (value) => {
+    console.log("onChange")
     calendar.gotoDate(value)
     setValue(value)
   }
@@ -60,8 +61,6 @@ export function InnerCalendar({
   useEffect(() => {
     console.log("change showDate")
     if (viewType === 'listWeek') {
-      // console.log(dayOfWee(showDate))
-      // // setValue(dayOfWee(showDate))
       setValue(showDate)
     } else {
       setValue(showDate)
@@ -97,7 +96,6 @@ export function InnerCalendar({
             value={value}
             onChange={onChange}
             calendarType='gregory'
-            // selectRange={viewType === 'listWeek'}
           />
         </div>
       )}

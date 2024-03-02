@@ -51,8 +51,8 @@ export function DemoApp({
 }) {
   const select = (selectInfo) => {
     changeSelectDate(selectInfo)
-    const { calendar } = selectInfo.view
-    setCalendar(calendar)
+    // const { calendar } = selectInfo.view
+    // setCalendar(calendar)
   }
 
   const eventClick = (clickInfo) => {
