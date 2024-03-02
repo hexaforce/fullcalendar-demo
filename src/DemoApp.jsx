@@ -8,10 +8,12 @@ import PropTypes from 'prop-types'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import listPlugin from '@fullcalendar/list'
 import { useEffect, useRef } from 'react'
-import { recombination } from './InnerCalendarSupport'
+import { creatInnerRoot } from './InnerCalendarSupport'
 import InnerCalendar from './InnerCalendar'
+import InnerGridButton from './InnerGridButton'
 import { Provider } from 'react-redux'
 import { store } from './redux/store'
+import { createRoot } from 'react-dom/client'
 
 const reportNetworkError = () => {
   alert('This action could not be completed')
@@ -103,12 +105,19 @@ export function DemoApp({
         }
       }
     }
-    recombination(
-      viewType,
-      <Provider store={store}>
-        <InnerCalendar />
-      </Provider>,
-    )
+    const { innerRoot } = creatInnerRoot(viewType)
+    if (innerRoot) {
+      const root = createRoot(innerRoot)
+      root.render(
+        <Provider store={store}>
+          <InnerGridButton />
+          <InnerCalendar />
+        </Provider>,
+      )
+      return () => {
+        setTimeout(() => root.unmount())
+      }
+    }
   }, [viewType])
 
   return (

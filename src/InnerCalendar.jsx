@@ -5,43 +5,37 @@ import 'react-calendar/dist/Calendar.css'
 import { connect } from 'react-redux'
 import FullCalendarAction from './redux/actions'
 
-const dayOfWee = (datetime) => {
-  datetime.setHours(0, 0, 0, 0)
-  const firstDayOfWeek = new Date(datetime.setDate(datetime.getDate() - datetime.getDay()))
-  const lastDayOfWeek = new Date(firstDayOfWeek)
-  lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6)
-  return [firstDayOfWeek, lastDayOfWeek]
-}
+// const dayOfWee = (datetime) => {
+//   datetime.setHours(0, 0, 0, 0)
+//   const firstDayOfWeek = new Date(datetime.setDate(datetime.getDate() - datetime.getDay()))
+//   const lastDayOfWeek = new Date(firstDayOfWeek)
+//   lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6)
+//   return [firstDayOfWeek, lastDayOfWeek]
+// }
 
 InnerCalendar.propTypes = {
-  events: PropTypes.array,
   calendar: PropTypes.object,
   viewType: PropTypes.string,
-  listMode: PropTypes.bool,
-  selectStart: PropTypes.object,
-  selectEnd: PropTypes.object,
   showDate: PropTypes.object,
-  setCalendar: PropTypes.func.isRequired,
+  selectStart: PropTypes.object,
 }
 
 export function InnerCalendar({
   //
   calendar,
-  setCalendar,
   viewType,
-  listMode,
   showDate,
   selectStart,
 }) {
   const [value, setValue] = useState(new Date())
   const onChange = (value) => {
-    console.log("onChange")
+    // console.log('onChange')
     calendar.gotoDate(value)
     setValue(value)
   }
 
   useEffect(() => {
-    console.log("change viewType")
+    // console.log('change viewType')
     if (viewType === 'listWeek') {
       if (selectStart) {
         setValue(selectStart)
@@ -59,7 +53,7 @@ export function InnerCalendar({
   }, [viewType])
 
   useEffect(() => {
-    console.log("change showDate")
+    // console.log('change showDate')
     if (viewType === 'listWeek') {
       setValue(showDate)
     } else {
@@ -68,44 +62,22 @@ export function InnerCalendar({
     calendar.updateSize()
   }, [showDate])
 
-  return (
-    <>
-      <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
-        <button
-          type='button'
-          onClick={() => {
-            if (listMode) {
-              if (viewType === 'listWeek') calendar.changeView('timeGridWeek')
-              if (viewType === 'listDay') calendar.changeView('timeGridDay')
-            } else {
-              if (viewType === 'timeGridWeek') calendar.changeView('listWeek')
-              if (viewType === 'timeGridDay') calendar.changeView('listDay')
-            }
-            setCalendar(calendar)
-          }}
-          aria-pressed='false'
-          className={`fc-${viewType}-button fc-button fc-button-primary`}
-        >
-          {listMode ? 'タイムグリッド表示' : 'リスト表示'}
-        </button>
-      </div>
+  if (viewType === 'timeGridWeek') return <></>
 
-      {viewType !== 'timeGridWeek' && (
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
-          <Calendar //
-            value={value}
-            onChange={onChange}
-            calendarType='gregory'
-          />
-        </div>
-      )}
-    </>
+  return (
+    <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
+      <Calendar //
+        value={value}
+        onChange={onChange}
+        calendarType='gregory'
+      />
+    </div>
   )
 }
 
 function mapStateToProps({ FullCalendarReducer }) {
-  const { calendar, viewType, listMode, showDate, selectStart, selectEnd } = FullCalendarReducer
-  return { calendar, viewType, listMode, showDate, selectStart, selectEnd }
+  const { calendar, viewType, showDate, selectStart } = FullCalendarReducer
+  return { calendar, viewType, showDate, selectStart }
 }
 
 const ConnectedInnerCalendar = connect(mapStateToProps, FullCalendarAction)(InnerCalendar)

@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types'
-import { createRoot } from 'react-dom/client'
 
-recombination.propTypes = {
+creatInnerRoot.propTypes = {
   currentView: PropTypes.string,
   calendar: PropTypes.node.isRequired,
 }
 
-export function recombination(currentView, calendar) {
+export function creatInnerRoot(currentView) {
   const $ = (query) => document.querySelector(query)
 
   let parent
@@ -22,36 +21,24 @@ export function recombination(currentView, calendar) {
     brother = $('div.fc-scroller.fc-scroller-liquid')
   }
 
-  const attachCalendar = () => {
-    const innerCalendar = document.createElement('div')
-    innerCalendar.classList.add('innerCalendar')
-    createRoot(innerCalendar).render(calendar)
-    currentView === 'timeGridWeek' ? parent.insertBefore(innerCalendar, parent.firstChild) : parent.appendChild(innerCalendar)
+  let innerRoot = $('div.innerRoot')
+  if (innerRoot) {
+    $('div.innerRoot').parentNode.removeChild($('div.innerRoot'))
   }
+  innerRoot = document.createElement('div')
+  innerRoot.classList.add('innerRoot')
 
   if (parent && brother) {
-    if (!$('div.innerCalendar')) {
-      attachCalendar()
-    } else {
-      var index = Array.prototype.indexOf.call(parent.children, $('div.innerCalendar'))
-      if (currentView === 'timeGridWeek' && index === 1) {
-        $('div.innerCalendar').parentNode.removeChild($('div.innerCalendar'))
-        attachCalendar()
-      } else if (currentView === 'timeGridDay' && index === 0) {
-        $('div.innerCalendar').parentNode.removeChild($('div.innerCalendar'))
-        attachCalendar()
-      }
-    }
-
+    currentView === 'timeGridWeek' ? parent.insertBefore(innerRoot, parent.firstChild) : parent.appendChild(innerRoot)
     if (currentView === 'timeGridWeek') {
       parent.style.display = null
       brother.style.flex = null
-      $('div.innerCalendar').style.flex = null
+      innerRoot.style.flex = null
     } else {
       parent.style.display = 'flex'
       brother.style.flex = '1 1 0%'
-      $('div.innerCalendar').style.flex = '0 1 0%'
+      innerRoot.style.flex = '0 1 0%'
     }
-    return
   }
+  return { innerRoot }
 }
