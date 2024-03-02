@@ -3,7 +3,15 @@ import { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { connect } from 'react-redux'
-import FullCalendarAction from './actions'
+import FullCalendarAction from './redux/actions'
+
+const dayOfWee = (datetime) => {
+  datetime.setHours(0, 0, 0, 0)
+  const firstDayOfWeek = new Date(datetime.setDate(datetime.getDate() - datetime.getDay()))
+  const lastDayOfWeek = new Date(firstDayOfWeek)
+  lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6)
+  return [firstDayOfWeek, lastDayOfWeek]
+}
 
 InnerCalendar.propTypes = {
   events: PropTypes.array,
@@ -32,10 +40,34 @@ export function InnerCalendar({
   }
 
   useEffect(() => {
-    if (selectStart) setValue(selectStart)
-    else setValue(showDate)
+    console.log("change viewType")
+    if (viewType === 'listWeek') {
+      if (selectStart) {
+        setValue(selectStart)
+      } else {
+        setValue(showDate)
+      }
+    } else {
+      if (selectStart) {
+        setValue(selectStart)
+      } else {
+        setValue(showDate)
+      }
+    }
     calendar.updateSize()
-  }, [selectStart])
+  }, [viewType])
+
+  useEffect(() => {
+    console.log("change showDate")
+    if (viewType === 'listWeek') {
+      // console.log(dayOfWee(showDate))
+      // // setValue(dayOfWee(showDate))
+      setValue(showDate)
+    } else {
+      setValue(showDate)
+    }
+    calendar.updateSize()
+  }, [showDate])
 
   return (
     <>
@@ -64,6 +96,7 @@ export function InnerCalendar({
           <Calendar //
             value={value}
             onChange={onChange}
+            calendarType='gregory'
             // selectRange={viewType === 'listWeek'}
           />
         </div>

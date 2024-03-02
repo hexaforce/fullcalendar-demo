@@ -22,6 +22,8 @@ const initialState = {
 }
 
 function FullCalendarReducer(state = initialState, action) {
+  console.log('action.type: ', action.type)
+
   switch (action.type) {
     case 'SET_CALENDAR': {
       const current = action.calendar.view.getCurrentData()

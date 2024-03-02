@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import FullCalendarAction from './actions'
+import FullCalendarAction from './redux/actions'
 import PropTypes from 'prop-types'
 import jaLocale from '@fullcalendar/core/locales/ja'
 import listPlugin from '@fullcalendar/list'
@@ -11,7 +11,7 @@ import { useEffect, useRef } from 'react'
 import { recombination } from './InnerCalendarSupport'
 import InnerCalendar from './InnerCalendar'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { store } from './redux/store'
 
 const reportNetworkError = () => {
   alert('This action could not be completed')
