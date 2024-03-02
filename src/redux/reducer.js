@@ -2,16 +2,21 @@ import { combineReducers } from 'redux'
 
 const initialState = {
   calendar: {},
-  showDate: null,
+
   viewType: '',
   listMode: false,
+
   activeStart: null,
   activeEnd: null,
+
   currentStart: null,
   currentEnd: null,
+
   title: '',
+  showDate: null,
   selectStart: null,
   selectEnd: null,
+
   events: [
     { allDay: true, title: 'あああ', start: '2024-03-03', end: '2024-03-04', id: 'ae3852a18-e319-4336-b955-ba5bd72ec5eca' },
     { allDay: true, title: 'いいい', start: '2024-03-04', end: '2024-03-05', id: 'a5749f304-2309-431e-8b6a-a80808d4dddca' },
