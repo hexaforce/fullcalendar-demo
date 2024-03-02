@@ -12,6 +12,7 @@ InnerCalendar.propTypes = {
   listMode: PropTypes.bool,
   selectStart: PropTypes.object,
   selectEnd: PropTypes.object,
+  showDate: PropTypes.object,
   setCalendar: PropTypes.func.isRequired,
 }
 
@@ -21,20 +22,21 @@ export function InnerCalendar({
   setCalendar,
   viewType,
   listMode,
+  showDate,
   selectStart,
 }) {
   const [value, setValue] = useState(new Date())
-  const onChange = (value, event) => {
+  const onChange = (value) => {
     calendar.gotoDate(value)
     setValue(value)
   }
 
   useEffect(() => {
-    setValue(selectStart)
+    if (selectStart) setValue(selectStart)
+    else setValue(showDate)
     calendar.updateSize()
   }, [selectStart])
 
-  
   return (
     <>
       <div style={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
@@ -71,8 +73,8 @@ export function InnerCalendar({
 }
 
 function mapStateToProps({ FullCalendarReducer }) {
-  const { calendar, viewType, listMode,showDate, selectStart, selectEnd } = FullCalendarReducer
-  return { calendar, viewType, listMode,showDate, selectStart, selectEnd }
+  const { calendar, viewType, listMode, showDate, selectStart, selectEnd } = FullCalendarReducer
+  return { calendar, viewType, listMode, showDate, selectStart, selectEnd }
 }
 
 const ConnectedInnerCalendar = connect(mapStateToProps, FullCalendarAction)(InnerCalendar)

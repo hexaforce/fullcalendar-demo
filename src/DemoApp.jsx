@@ -62,7 +62,7 @@ export function DemoApp({
   }
 
   const datesSet = (rangeInfo) => {
-    console.log(rangeInfo)
+    // console.log(rangeInfo)
     // requestEvents(rangeInfo.startStr, rangeInfo.endStr).catch(reportNetworkError)
   }
 
